@@ -1,5 +1,5 @@
 import akka.actor.SupervisorStrategy.{Escalate, Restart, Resume, Stop}
-import akka.actor.{Actor, ActorRef, OneForOneStrategy, Props}
+import akka.actor.{Actor, ActorRef, ActorSystem, OneForOneStrategy, Props}
 
 import scala.concurrent.duration.Duration
 
@@ -65,4 +65,26 @@ class Hera extends Actor {
       childRef ! msg
       Thread.sleep(100)
   }
+}
+
+object Supervision extends App {
+
+  val system = ActorSystem("supervision")
+
+  val hera = system.actorOf(Props[Hera], "hera")
+
+  //hera ! "Resume"
+  //Thread.sleep(1000)
+  //println()
+
+  hera ! "Restart"
+  Thread.sleep(1000)
+  println()
+
+  //hera ! "Stop"
+  //Thread.sleep(1000)
+  //println()
+
+  system.terminate()
+
 }
